@@ -27,3 +27,5 @@ yarn-error.log*
 *.code-workspace
 
 .idea/
+
+cypress.env.json
