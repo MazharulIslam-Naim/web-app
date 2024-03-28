@@ -1,5 +1,5 @@
 import { RewardsContext, RewardsContextType } from '@/contexts/rewards-context';
-import { Rewards } from '@/models/Rewards';
+import { RewardInfo } from "@/models/RewardInfo";
 import ChallengerWelcome from '@/pages/challenger-welcome';
 import '@testing-library/jest-dom';
 import { cleanup, render, screen } from '@testing-library/react';
@@ -15,9 +15,11 @@ describe('ChallengerWelcome', () => {
     it('opens the signup page when the first button is clicked', async () => {
       mockRouter.push("/initial-path");
       const user = userEvent.setup();
+
       render (
         <ChallengerWelcome />
       );
+
       const fgetStartedbtn = screen.getAllByRole('button')[0];
       await user.click(fgetStartedbtn);
       expect(mockRouter).toMatchObject({asPath: "/signup"});
@@ -26,16 +28,18 @@ describe('ChallengerWelcome', () => {
     it('opens the signup page when the second button is clicked', async () => {
       mockRouter.push("/initial-path");
       const user = userEvent.setup();
+
       render (
         <ChallengerWelcome />
       );
+      
       const sgetStartedbtn = screen.getAllByRole('button')[1];
       await user.click(sgetStartedbtn); 
       expect(mockRouter).toMatchObject({asPath: "/signup"});
     });
 
     it("Displays different text for step four if there are rewards available", async () => {
-      const rewards = Builder<Rewards>([{
+      const rewardsArray: Array<RewardInfo> = [{
         businessDescription:"At Chefus, everything we do is to bring a chef-made meal with fresh ingredients to your table at an incredible price.",
         businessLink:"https://www.chefus.com/",
         businessType:"Online deliveries",
@@ -51,8 +55,8 @@ describe('ChallengerWelcome', () => {
         rewardLink:"https://www.chefus.com/",
         rewardStartDate:new Date("2022-08-01"),
         rewardType:"Online",
-      }]).build();
-      const rewardsCtxValue = Builder<RewardsContextType>().rewardsInfo(rewards).build();
+      }];
+      const rewardsCtxValue = Builder<RewardsContextType>().rewards(rewardsArray).build();
   
       render(
         <RewardsContext.Provider value={rewardsCtxValue}>

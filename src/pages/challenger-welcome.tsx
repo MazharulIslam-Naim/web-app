@@ -4,7 +4,7 @@ import { UserContext } from "@/contexts/user-context";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import StepFour from "../../public/assets/images/ChallengerWelcome/StepFour.png";
 import StepOne from "../../public/assets/images/ChallengerWelcome/StepOne.png";
 import StepThree from "../../public/assets/images/ChallengerWelcome/StepThree.png";
@@ -17,20 +17,9 @@ function ChallengerWelcome() {
   const router = useRouter();
   sessionStorage.setItem("UserType", "Challenger");
 
-  const [rewardsAvailable, setRewardsAvailable] = useState<boolean>(false);
   const { activeUser } = useContext(UserContext);
-  const { rewardsInfo } = useContext(RewardsContext);
-
-  useEffect(() => {
-    if (rewardsInfo) {
-      for (let i in rewardsInfo) {
-        if (rewardsInfo[i].rewardAvailable) {
-          setRewardsAvailable(true);
-          break;
-        }
-      }
-    }
-  },[rewardsInfo]);
+  const { rewards } = useContext(RewardsContext);
+  const [rewardsAvailable, setRewardsAvailable] = useState<boolean>(rewards.some(r => r.rewardAvailable));
 
   return (
     <PageContainer>
